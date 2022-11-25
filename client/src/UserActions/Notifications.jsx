@@ -1,14 +1,12 @@
+import { useNotifications } from "../../contexts/NotificationsContext.jsx";
 import { useUser } from "../../contexts/UserContext.jsx";
 import { send } from "../../services/api.js";
-import { subscribeToServerNotifications, unsubscribeFromServerNotifications } from "../../services/notifications.js";
 
 
 function Notifications() {
     const { user } = useUser();
+    const { subscribed, subscribe, unsubscribe } = useNotifications();
 
-    async function subscribe() {
-        await subscribeToServerNotifications(user);
-    }
 
     async function sendToMe() {
         await send(user.id);
@@ -19,7 +17,9 @@ function Notifications() {
             <label>
                 Send me notifications
                 <input type="checkbox"
-                       onChange={e => e.target.checked ? subscribe() : unsubscribeFromServerNotifications()}/>
+                       checked={subscribed}
+                       disabled={Notification.permission === "denied"}
+                       onChange={e => e.target.checked ? subscribe() : unsubscribe()}/>
             </label>
             <button onClick={sendToMe}>Send To Me</button>
         </>

@@ -10,7 +10,7 @@ import users from "./routes/users.js";
 dotenv.config();
 await mongoConnect();
 webPush.setVapidDetails(
-    "https://example.com/",
+    "https://site.com/",
     process.env.VAPID_PUBLIC,
     process.env.VAPID_PRIVATE
 );

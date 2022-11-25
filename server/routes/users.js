@@ -9,7 +9,7 @@ router.post("/new", async (req, res) => {
     const newUser = new User({ username, password });
     await newUser.save();
 
-    res.status(200).send(newUser);
+    res.status(201).send(newUser);
 });
 
 router.post("/login", async (req, res) => {

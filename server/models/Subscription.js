@@ -2,13 +2,14 @@ import mongoose, { Schema } from "mongoose";
 import User from "./User.js";
 
 
-const schema = new mongoose.Schema({
+const subscriptionSchema = new mongoose.Schema({
     data: Object,
-    userId: {
+    owner: {
         type: Schema.Types.ObjectId,
         ref: User
-    }
+    },
+    deviceIdentifier: String
 });
 
 
-export default mongoose.model("Subscription", schema);
+export default mongoose.model("Subscription", subscriptionSchema);

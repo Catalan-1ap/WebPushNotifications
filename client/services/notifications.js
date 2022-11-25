@@ -1,12 +1,18 @@
-import { publicKey, subscribe } from "./api.js";
+import { publicKey, subscribe, unsubscribe } from "./api.js";
 
 
-export async function subscribeToServerNotifications(user) {
+export async function subscribeToServerNotifications(userId, deviceIdentifier) {
+    if (!isServiceWorkerAndPushApiAvailable()) {
+        console.error("ServiceWorker and Push not available");
+        return;
+    }
+
     await navigator.serviceWorker.register("./notificationsServiceWorker.js", {
         scope: "/"
     });
     const registration = await navigator.serviceWorker.ready;
     let subscription = await registration.pushManager.getSubscription();
+
     if (!subscription) {
         const key = await publicKey();
         const convertedKey = urlBase64ToUint8Array(key);
@@ -14,14 +20,29 @@ export async function subscribeToServerNotifications(user) {
             userVisibleOnly: true,
             applicationServerKey: convertedKey
         });
+        await subscribe(subscription, userId, deviceIdentifier);
     }
-
-    await subscribe(subscription, user);
 }
 
 
-export async function unsubscribeFromServerNotifications() {
+export async function unsubscribeFromServerNotifications(userId) {
+    if (!isServiceWorkerAndPushApiAvailable()) {
+        return;
+    }
 
+    const registration = await navigator.serviceWorker.ready;
+    const subscription = await registration.pushManager.getSubscription();
+
+    if (!subscription)
+        return;
+
+    await subscription.unsubscribe();
+    await unsubscribe(userId);
+}
+
+
+function isServiceWorkerAndPushApiAvailable() {
+    return "serviceWorker" in navigator && "PushManager" in window;
 }
 
 
