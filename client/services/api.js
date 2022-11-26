@@ -1,5 +1,13 @@
 const baseRoute = "http://192.168.0.100:3000/api";
 
+
+export async function notifiableUsers() {
+    const res = await fetch(`${baseRoute}/inspect/notifiableUsers`).then(x => x.json());
+
+    return res;
+}
+
+
 export async function register(user) {
     const res = await fetch(`${baseRoute}/users/new`, {
         method: "POST",
@@ -68,14 +76,16 @@ export async function unsubscribe(userId) {
 }
 
 
-export async function send(receiverId) {
+export async function send(receiverId, title, options) {
     await fetch(`${baseRoute}/notifications/send`, {
         method: "post",
         headers: {
             "Content-type": "application/json"
         },
         body: JSON.stringify({
-            receiverId
+            receiverId,
+            title,
+            options
         }),
     });
 }

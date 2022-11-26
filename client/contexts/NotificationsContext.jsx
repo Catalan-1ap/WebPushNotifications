@@ -35,13 +35,13 @@ export function NotificationsProvider({ children }) {
     }, [user]);
 
     async function subscribe() {
-        setSubscribed(true);
         await subscribeToServerNotifications(user.id, deviceIdentifier);
+        setSubscribed(true);
     }
 
     async function unsubscribe() {
-        setSubscribed(false);
         await unsubscribeFromServerNotifications(user.id);
+        setSubscribed(false);
     }
 
     return (

@@ -39,13 +39,17 @@ router.post("/unsubscribe", async (req, res) => {
 });
 
 router.post("/send", async (req, res) => {
-    const { receiverId } = req.body;
+    const { receiverId, title, options } = req.body;
 
-    const subscriptions = await Subscription.find({ owner: receiverId }).exec();
-    const notifications = subscriptions.map(async subscription => {
-        await webPush.sendNotification(subscription.data, JSON.stringify({ title: "Test Message" }));
-    });
-    await Promise.all(notifications);
+    try {
+        const subscriptions = await Subscription.find({ owner: receiverId }).exec();
+        const notifications = subscriptions.map(async subscription => {
+            await webPush.sendNotification(subscription.data, JSON.stringify({ title, options }));
+        });
+        await Promise.all(notifications);
+    } catch (e) {
+        console.error(e);
+    }
 
     res.status(200).send();
 });
