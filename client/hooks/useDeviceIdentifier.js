@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 
 const storageKey = "device-identifier";
@@ -12,7 +11,8 @@ export default function useDeviceIdentifier() {
         let item = localStorage.getItem(storageKey);
 
         if (!item) {
-            item = uuidv4();
+            const deviceInfo = navigator.userAgent.match(/(\(([^)])+\))/)[0];
+            item = `${screen.height}h-${screen.width}w-${window.devicePixelRatio}px-${deviceInfo}`;
             localStorage.setItem(storageKey, item);
         }
 

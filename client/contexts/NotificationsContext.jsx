@@ -1,10 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import useDeviceIdentifier from "../hooks/useDeviceIdentifier.js";
-import { isSubscribed } from "../services/api.js";
+import { checkSubscription } from "../services/api.js";
 import { subscribeToServerNotifications, unsubscribeFromServerNotifications } from "../services/notifications.js";
 import { useUser } from "./UserContext.jsx";
 
 
+const usersToNotifyStorageKey = "users-ids-to-notify";
 const NotificationsContext = createContext();
 
 
@@ -20,10 +21,10 @@ export function NotificationsProvider({ children }) {
 
     useEffect(() => {
         async function impl() {
-            const subscribeStatus = await isSubscribed(user.id);
+            const isSubscribed = await checkSubscription(user.id);
 
-            setSubscribed(subscribeStatus);
-            if (subscribeStatus)
+            setSubscribed(isSubscribed);
+            if (isSubscribed)
                 await subscribe();
         }
 

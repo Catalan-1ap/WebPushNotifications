@@ -20,8 +20,9 @@ export async function subscribeToServerNotifications(userId, deviceIdentifier) {
             userVisibleOnly: true,
             applicationServerKey: convertedKey
         });
-        await subscribe(subscription, userId, deviceIdentifier);
     }
+
+    await subscribe(subscription, userId, deviceIdentifier);
 }
 
 

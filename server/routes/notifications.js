@@ -9,7 +9,7 @@ router.get("/publicKey", async (req, res) => {
     res.status(200).send(process.env.VAPID_PUBLIC);
 });
 
-router.get("/:userId/isSubscribed", async (req, res) => {
+router.get("/:userId/checkSubscription", async (req, res) => {
     const userId = req.params.userId;
 
     const subscriptionsCount = await Subscription.count({ owner: userId }).exec();
@@ -20,7 +20,7 @@ router.get("/:userId/isSubscribed", async (req, res) => {
 router.post("/subscribe", async (req, res) => {
     const { subscription, userId, deviceIdentifier } = req.body;
 
-    await Subscription.deleteMany({ deviceIdentifier }).exec();
+    await Subscription.deleteOne({ owner: userId, deviceIdentifier }).exec();
     const newSubscription = new Subscription({
         data: subscription,
         owner: userId,

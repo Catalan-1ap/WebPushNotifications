@@ -9,8 +9,6 @@ export async function register(user) {
         body: JSON.stringify(user)
     }).then(x => x.json());
 
-    console.log("register", res);
-
     return res;
 }
 
@@ -24,8 +22,6 @@ export async function login(user) {
         body: JSON.stringify(user)
     }).then(x => x.json());
 
-    console.log("login", res);
-
     return res;
 }
 
@@ -33,16 +29,13 @@ export async function login(user) {
 export async function publicKey() {
     const res = await fetch(`${baseRoute}/notifications/publicKey`).then(x => x.text());
 
-    console.log("publicKey", res);
-
     return res;
 }
 
 
-export async function isSubscribed(userId) {
-    const res = await fetch(`${baseRoute}/notifications/${userId}/isSubscribed`).then(x => x.json());
+export async function checkSubscription(userId) {
+    const res = await fetch(`${baseRoute}/notifications/${userId}/checkSubscription`).then(x => x.json());
 
-    console.log("isSubscribed", { res });
     return res;
 }
 
@@ -59,8 +52,6 @@ export async function subscribe(subscription, userId, deviceIdentifier) {
             deviceIdentifier
         }),
     });
-
-    console.log("subscribe", { subscription, userId, deviceIdentifier });
 }
 
 
@@ -74,8 +65,6 @@ export async function unsubscribe(userId) {
             userId
         }),
     });
-
-    console.log("unsubscribe", { userId });
 }
 
 
