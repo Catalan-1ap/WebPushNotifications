@@ -5,7 +5,6 @@ import { subscribeToServerNotifications, unsubscribeFromServerNotifications } fr
 import { useUser } from "./UserContext.jsx";
 
 
-const usersToNotifyStorageKey = "users-ids-to-notify";
 const NotificationsContext = createContext();
 
 

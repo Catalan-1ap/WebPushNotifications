@@ -19,16 +19,20 @@ function NotifiableUsers() {
 
     return (
         <>
-            {users.length > 0 && <hr/>}
-            {users.length > 0 && users.map(user => (
-                <div key={user._id}>
-                    <NotifiableUser id={user._id}
-                                    username={user.username}
-                                    deviceIdentifier={user.deviceIdentifier}/>
+            {users.length > 0 && (
+                <>
                     <hr/>
-                </div>
-            ))}
-            <button onClick={fetchUsers}>Refresh</button>
+                    {users.map(user => (
+                        <div key={user.deviceIdentifier}>
+                            <NotifiableUser id={user._id}
+                                            username={user.username}
+                                            deviceIdentifier={user.deviceIdentifier}/>
+                            <hr/>
+                        </div>
+                    ))}
+                    <button onClick={fetchUsers}>Refresh</button>
+                </>
+            )}
         </>
     );
 }

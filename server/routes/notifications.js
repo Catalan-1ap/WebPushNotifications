@@ -12,9 +12,9 @@ router.get("/publicKey", async (req, res) => {
 router.get("/:userId/checkSubscription", async (req, res) => {
     const userId = req.params.userId;
 
-    const subscriptionsCount = await Subscription.count({ owner: userId }).exec();
+    const subscription = await Subscription.findOne({ owner: userId }).exec();
 
-    res.status(200).send(subscriptionsCount > 0);
+    res.status(200).send(!!subscription);
 });
 
 router.post("/subscribe", async (req, res) => {
