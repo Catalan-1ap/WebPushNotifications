@@ -43,7 +43,7 @@ export async function publicKey() {
 
 export async function checkSubscription(userId) {
     const res = await fetch(`${baseRoute}/notifications/${userId}/checkSubscription`).then(x => x.json());
-
+    console.log(res);
     return res;
 }
 
