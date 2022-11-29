@@ -1,15 +1,13 @@
 import { publicKey, subscribe, unsubscribe } from "./api.js";
 
 
-const swRegistration = navigator.serviceWorker.ready;
-
-
 export async function subscribeToServerNotifications(userId, deviceIdentifier) {
     if (!isServiceWorkerAndPushApiAvailable()) {
         console.error("ServiceWorker and Push not available");
         return;
     }
 
+    const swRegistration = await navigator.serviceWorker.ready;
     let subscription = await swRegistration.pushManager.getSubscription();
 
     if (!subscription) {
@@ -30,6 +28,7 @@ export async function unsubscribeFromServerNotifications(userId) {
         return;
     }
 
+    const swRegistration = await navigator.serviceWorker.ready;
     const subscription = await swRegistration.pushManager.getSubscription();
 
     if (!subscription)

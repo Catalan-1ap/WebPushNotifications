@@ -1,4 +1,4 @@
-const baseRoute = "http://192.168.0.100:3000/api";
+const baseRoute = import.meta.env.VITE_API_URL;
 
 
 export async function notifiableUsers() {
