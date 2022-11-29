@@ -1,10 +1,7 @@
 import { publicKey, subscribe, unsubscribe } from "./api.js";
 
 
-await navigator.serviceWorker.register("./notificationsServiceWorker.js", {
-    scope: "/"
-});
-const swRegistration = await navigator.serviceWorker.ready;
+const swRegistration = navigator.serviceWorker.ready;
 
 
 export async function subscribeToServerNotifications(userId, deviceIdentifier) {

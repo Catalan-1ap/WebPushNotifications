@@ -5,12 +5,19 @@ import { UserProvider } from "../contexts/UserContext.jsx";
 import App from "./App.jsx";
 
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        <UserProvider>
-            <NotificationsProvider>
-                <App/>
-            </NotificationsProvider>
-        </UserProvider>
-    </React.StrictMode>
-);
+navigator.serviceWorker
+    .register("./notificationsServiceWorker.js", {
+        scope: "/"
+    })
+    .then(() => navigator.serviceWorker.ready)
+    .then(() => {
+        ReactDOM.createRoot(document.getElementById("root")).render(
+            <React.StrictMode>
+                <UserProvider>
+                    <NotificationsProvider>
+                        <App/>
+                    </NotificationsProvider>
+                </UserProvider>
+            </React.StrictMode>
+        );
+    });
