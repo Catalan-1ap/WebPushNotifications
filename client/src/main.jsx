@@ -10,7 +10,8 @@ navigator.serviceWorker
         scope: "/"
     })
     .then(() => navigator.serviceWorker.ready)
-    .then(() => {
+    .catch(error => alert(error))
+    .finally(() => {
         ReactDOM.createRoot(document.getElementById("root")).render(
             <React.StrictMode>
                 <UserProvider>
