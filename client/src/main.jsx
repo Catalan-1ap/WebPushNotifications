@@ -10,15 +10,14 @@ navigator.serviceWorker
         scope: "/"
     })
     .then(() => navigator.serviceWorker.ready)
-    .catch(error => alert(error))
-    .finally(() => {
-        ReactDOM.createRoot(document.getElementById("root")).render(
-            <React.StrictMode>
-                <UserProvider>
-                    <NotificationsProvider>
-                        <App/>
-                    </NotificationsProvider>
-                </UserProvider>
-            </React.StrictMode>
-        );
-    });
+    .catch(error => alert(error));
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+    <React.StrictMode>
+         <UserProvider>
+            <NotificationsProvider>
+                <App/>
+            </NotificationsProvider>
+        </UserProvider>
+    </React.StrictMode>
+);
