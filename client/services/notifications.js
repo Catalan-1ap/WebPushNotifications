@@ -39,7 +39,7 @@ export async function unsubscribeFromServerNotifications(userId) {
 }
 
 
-function isServiceWorkerAndPushApiAvailable() {
+export function isServiceWorkerAndPushApiAvailable() {
     return "serviceWorker" in navigator && "PushManager" in window;
 }
 
