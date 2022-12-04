@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/:userId", async (req, res) => {
 	const userId = req.params.userId;
 
-	const messages = await Message.find({ receiver: userId }).exec();
+	const messages = await Message.find({ receiverId: userId }).exec();
 
 	res.status(200).send(messages);
 });
