@@ -20,5 +20,8 @@ jobs:
           cd ~/WebPushNotifications
           git pull
           cd server
-          npm install
+          npm i
           pm2 restart www
+          cd ../client
+          npm i
+          npm run build
