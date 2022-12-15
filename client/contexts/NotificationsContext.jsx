@@ -2,14 +2,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 import useDeviceIdentifier from "../hooks/useDeviceIdentifier.js";
 import { checkSubscription } from "../services/api.js";
 import {
-	isServiceWorkerAndPushApiAvailable,
+	isNotificationsAvailable,
 	subscribeToServerNotifications,
 	unsubscribeFromServerNotifications
 } from "../services/notifications.js";
 import { useUser } from "./UserContext.jsx";
 
 
-const NotificationsContext = createContext();
+const NotificationsContext = createContext({});
 
 
 export function useNotifications() {
@@ -49,7 +49,7 @@ export function NotificationsProvider({ children }) {
 
 	return (
 		<NotificationsContext.Provider value={{
-			isAvailable: isServiceWorkerAndPushApiAvailable(),
+			isAvailable: isNotificationsAvailable(),
 			subscribed,
 			subscribe,
 			unsubscribe

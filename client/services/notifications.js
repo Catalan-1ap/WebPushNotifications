@@ -2,59 +2,69 @@ import { publicKey, subscribe, unsubscribe } from "./api.js";
 
 
 export async function subscribeToServerNotifications(userId, deviceIdentifier) {
-    if (!isServiceWorkerAndPushApiAvailable()) {
-        console.error("ServiceWorker and Push not available");
-        return;
-    }
+	if (!isServiceWorkerAndPushApiAvailable()) {
+		console.error("ServiceWorker and Push not available");
+		return;
+	}
 
-    const swRegistration = await navigator.serviceWorker.ready;
-    let subscription = await swRegistration.pushManager.getSubscription();
+	const swRegistration = await navigator.serviceWorker.ready;
+	let subscription = await swRegistration.pushManager.getSubscription();
 
-    if (!subscription) {
-        const key = await publicKey();
-        const convertedKey = urlBase64ToUint8Array(key);
-        subscription = await swRegistration.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: convertedKey
-        });
-    }
+	if (!subscription) {
+		const key = await publicKey();
+		const convertedKey = urlBase64ToUint8Array(key);
+		subscription = await swRegistration.pushManager.subscribe({
+			userVisibleOnly: true,
+			applicationServerKey: convertedKey
+		});
+	}
 
-    await subscribe(subscription, userId, deviceIdentifier);
+	await subscribe(subscription, userId, deviceIdentifier);
 }
 
 
 export async function unsubscribeFromServerNotifications(userId) {
-    if (!isServiceWorkerAndPushApiAvailable()) {
-        return;
-    }
+	if (!isServiceWorkerAndPushApiAvailable()) {
+		return;
+	}
 
-    const swRegistration = await navigator.serviceWorker.ready;
-    const subscription = await swRegistration.pushManager.getSubscription();
+	const swRegistration = await navigator.serviceWorker.ready;
+	const subscription = await swRegistration.pushManager.getSubscription();
 
-    if (!subscription)
-        return;
+	if (!subscription)
+		return;
 
-    await subscription.unsubscribe();
-    await unsubscribe(userId);
+	await subscription.unsubscribe();
+	await unsubscribe(userId);
 }
 
 
-export function isServiceWorkerAndPushApiAvailable() {
-    return "serviceWorker" in navigator && "PushManager" in window;
+export function isNotificationsAvailable() {
+	return isServiceWorkerAndPushApiAvailable() || isSpnAvailable();
+}
+
+
+function isServiceWorkerAndPushApiAvailable() {
+	return "serviceWorker" in navigator && "PushManager" in window;
+}
+
+
+function isSpnAvailable() {
+	return "safari" in window && "pushNotification" in window.safari;
 }
 
 
 function urlBase64ToUint8Array(base64String) {
-    const padding = "=".repeat((4 - base64String.length % 4) % 4);
-    const base64 = (base64String + padding)
-        .replace(/\-/g, "+")
-        .replace(/_/g, "/");
+	const padding = "=".repeat((4 - base64String.length % 4) % 4);
+	const base64 = (base64String + padding)
+	.replace(/\-/g, "+")
+	.replace(/_/g, "/");
 
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
+	const rawData = window.atob(base64);
+	const outputArray = new Uint8Array(rawData.length);
 
-    for (let i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
+	for (let i = 0; i < rawData.length; ++i) {
+		outputArray[i] = rawData.charCodeAt(i);
+	}
+	return outputArray;
 }

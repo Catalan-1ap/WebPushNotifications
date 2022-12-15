@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react";
 
 
-const UserContext = createContext();
+const UserContext = createContext({});
 
 
 export function useUser() {
