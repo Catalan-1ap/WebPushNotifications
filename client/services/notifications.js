@@ -1,12 +1,31 @@
 import { publicKey, subscribe, unsubscribe } from "./api.js";
 
 
-export async function subscribeToServerNotifications(userId, deviceIdentifier) {
-	if (!isServiceWorkerAndPushApiAvailable()) {
-		console.error("ServiceWorker and Push not available");
-		return;
-	}
+export async function subscribeViaSpn(userId) {
+	const permissionData = window.safari.pushNotification.permission("web.pushNotificationsExample");
 
+	checkRemotePermission(permissionData);
+}
+
+
+function checkRemotePermission(permissionData) {
+	if (permissionData.permission === "default") {
+		// This is a new web service URL and its validity is unknown.
+		window.safari.pushNotification.requestPermission(
+			"https://pushnotificationsexample.ru/api/spn", // The web service URL.
+			"web.pushNotificationsExample",     // The Website Push ID.
+			{ test: "testData" }, // Data that you choose to send to your server to help you identify the user.
+			checkRemotePermission         // The callback function.
+		);
+	} else if (permissionData.permission === "denied") {
+
+	} else if (permissionData.permission === "granted") {
+		console.log(permissionData);
+	}
+}
+
+
+export async function subscribeViaPushApi(userId, deviceIdentifier) {
 	const swRegistration = await navigator.serviceWorker.ready;
 	let subscription = await swRegistration.pushManager.getSubscription();
 
@@ -24,10 +43,6 @@ export async function subscribeToServerNotifications(userId, deviceIdentifier) {
 
 
 export async function unsubscribeFromServerNotifications(userId) {
-	if (!isServiceWorkerAndPushApiAvailable()) {
-		return;
-	}
-
 	const swRegistration = await navigator.serviceWorker.ready;
 	const subscription = await swRegistration.pushManager.getSubscription();
 
@@ -44,12 +59,12 @@ export function isNotificationsAvailable() {
 }
 
 
-function isServiceWorkerAndPushApiAvailable() {
+export function isServiceWorkerAndPushApiAvailable() {
 	return "serviceWorker" in navigator && "PushManager" in window;
 }
 
 
-function isSpnAvailable() {
+export function isSpnAvailable() {
 	return "safari" in window && "pushNotification" in window.safari;
 }
 

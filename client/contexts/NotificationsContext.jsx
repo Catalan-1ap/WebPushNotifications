@@ -3,7 +3,9 @@ import useDeviceIdentifier from "../hooks/useDeviceIdentifier.js";
 import { checkSubscription } from "../services/api.js";
 import {
 	isNotificationsAvailable,
-	subscribeToServerNotifications,
+	isSpnAvailable,
+	subscribeViaPushApi,
+	subscribeViaSpn,
 	unsubscribeFromServerNotifications
 } from "../services/notifications.js";
 import { useUser } from "./UserContext.jsx";
@@ -38,7 +40,11 @@ export function NotificationsProvider({ children }) {
 	}, [user]);
 
 	async function subscribe() {
-		await subscribeToServerNotifications(user.id, deviceIdentifier);
+		if (isSpnAvailable())
+			await subscribeViaSpn(user.id);
+		else
+			await subscribeViaPushApi(user.id, deviceIdentifier);
+
 		setSubscribed(true);
 	}
 
