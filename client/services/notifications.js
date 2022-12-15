@@ -10,15 +10,14 @@ export async function subscribeViaSpn(userId) {
 
 function checkRemotePermission(permissionData) {
 	if (permissionData.permission === "default") {
-		// This is a new web service URL and its validity is unknown.
 		window.safari.pushNotification.requestPermission(
-			"https://pushnotificationsexample.ru/api/spn", // The web service URL.
-			"web.pushNotificationsExample",     // The Website Push ID.
-			{ test: "testData" }, // Data that you choose to send to your server to help you identify the user.
-			checkRemotePermission         // The callback function.
+			"https://pushnotificationsexample.ru",
+			"web.pushNotificationsExample",
+			{ test: "testData" },
+			checkRemotePermission
 		);
 	} else if (permissionData.permission === "denied") {
-
+		console.log("denied");
 	} else if (permissionData.permission === "granted") {
 		console.log(permissionData);
 	}
