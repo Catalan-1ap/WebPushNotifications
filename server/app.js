@@ -13,9 +13,9 @@ import users from "./routes/users.js";
 dotenv.config();
 await mongoConnect();
 webPush.setVapidDetails(
-    "https://site.com/",
-    process.env.VAPID_PUBLIC,
-    process.env.VAPID_PRIVATE
+	"https://pushnotificationsexample.ru",
+	process.env.VAPID_PUBLIC,
+	process.env.VAPID_PRIVATE
 );
 
 const app = express();
@@ -30,4 +30,4 @@ router.use("/messages", messages);
 router.use("/inspect", inspect);
 router.use("/spn", spn);
 
-export default app;
+app.listen(process.env.PORT || 3000, () => console.log("Listening..."));
