@@ -21,7 +21,7 @@ jobs:
           git pull
           cd server
           npm i
-          pm2 restart www
+          pm2 restart app
           cd ../client
           npm i
           npm run build
