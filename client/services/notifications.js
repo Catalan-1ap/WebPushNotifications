@@ -2,7 +2,7 @@ import { publicKey, subscribe, unsubscribe } from "./api.js";
 
 
 export async function subscribeViaSpn(userId) {
-	const permissionData = window.safari.pushNotification.permission("web.pushNotificationsExample");
+	const permissionData = window.safari.pushNotification.permission("web.ru.pushnotificationsexample");
 
 	checkRemotePermission(permissionData);
 }
@@ -12,7 +12,7 @@ function checkRemotePermission(permissionData) {
 	if (permissionData.permission === "default") {
 		window.safari.pushNotification.requestPermission(
 			"https://pushnotificationsexample.ru/api/spn",
-			"web.pushNotificationsExample",
+			"web.ru.pushnotificationsexample",
 			{ test: "testData" },
 			checkRemotePermission
 		);
