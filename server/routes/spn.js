@@ -18,7 +18,7 @@ router.delete("/:version/devices/:device/registrations/:website", async (req, re
 	res.status(200).send();
 });
 
-router.delete("/:version/log", async (req, res) => {
+router.post("/:version/log", async (req, res) => {
 	console.log(req.body);
 	res.status(200).send();
 });
