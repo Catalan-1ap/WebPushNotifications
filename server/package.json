@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "nodemon --inspect bin/www.js"
+    "start": "nodemon --inspect app.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

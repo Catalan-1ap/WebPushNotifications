@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/:version/pushPackages/:website", async (req, res) => {
 	const packagePath = path.resolve("./public/pushPackage.zip");
-
+	console.log("package requested");
 	res.status(200).sendFile(packagePath);
 });
 

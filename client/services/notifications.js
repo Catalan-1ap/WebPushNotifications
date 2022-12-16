@@ -11,7 +11,7 @@ export async function subscribeViaSpn(userId) {
 function checkRemotePermission(permissionData) {
 	if (permissionData.permission === "default") {
 		window.safari.pushNotification.requestPermission(
-			"https://pushnotificationsexample.ru",
+			"https://pushnotificationsexample.ru/api/spn",
 			"web.pushNotificationsExample",
 			{ test: "testData" },
 			checkRemotePermission
