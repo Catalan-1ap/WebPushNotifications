@@ -6,19 +6,24 @@ import { isNotificationsAvailable } from "../services/notifications.js";
 import App from "./App.jsx";
 
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-	<React.StrictMode>
-		<UserProvider>
-			<NotificationsProvider>
-				<App/>
-			</NotificationsProvider>
-		</UserProvider>
-	</React.StrictMode>
-);
+try {
+	ReactDOM.createRoot(document.getElementById("root")).render(
+		<React.StrictMode>
+			<UserProvider>
+				<NotificationsProvider>
+					<App/>
+				</NotificationsProvider>
+			</UserProvider>
+		</React.StrictMode>
+	);
+} catch (e) {
+	alert(e);
+}
 
 if (isNotificationsAvailable())
 	navigator.serviceWorker
 	         .register("./notificationsServiceWorker.js", {
 		         scope: "/"
 	         })
-	         .then(() => navigator.serviceWorker.ready);
+	         .then(() => navigator.serviceWorker.ready)
+		 .catch(e => alert(e));
