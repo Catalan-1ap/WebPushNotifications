@@ -34,6 +34,9 @@ export function NotificationsProvider({ children }) {
 				await subscribe();
 		}
 
+		if (!user)
+			return;
+
 		impl();
 	}, [user]);
 
