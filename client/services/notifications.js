@@ -23,7 +23,7 @@ function checkRemotePermission(permissionData) {
 		case "denied":
 			return null;
 		case "granted":
-			return "yep";
+			return permissionData.deviceToken;
 	}
 
 	return Promise.resolve(requestSpnPermission()).then(checkRemotePermission);
@@ -38,7 +38,7 @@ function requestSpnPermission() {
 			{},
 			resolve
 		);
-	});
+	})
 }
 
 
