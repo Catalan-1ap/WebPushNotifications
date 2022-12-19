@@ -21,13 +21,12 @@ export async function subscribeViaSpn(userId) {
 function checkRemotePermission(permissionData) {
 	switch (permissionData.permission) {
 		case "default":
-			window.safari.pushNotification.requestPermission(
+			return window.safari.pushNotification.requestPermission(
 				"https://pushnotificationsexample.ru/api/spn",
 				"web.ru.pushnotificationsexample",
 				{ test: "testData" },
 				checkRemotePermission
 			);
-			break;
 		case "denied":
 			break;
 		case "granted":
