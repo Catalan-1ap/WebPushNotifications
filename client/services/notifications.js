@@ -9,8 +9,8 @@ export function isSpnAllowed() {
 export async function subscribeViaSpn(userId) {
 	const permissionData = window.safari.pushNotification.permission("web.ru.pushnotificationsexample");
 
-	const deviceIdentifier = checkRemotePermission(permissionData);
-	console.log(deviceIdentifier);
+	const deviceIdentifier = await checkRemotePermission(permissionData);
+
 	if (!deviceIdentifier)
 		return;
 
@@ -19,23 +19,24 @@ export async function subscribeViaSpn(userId) {
 
 
 function checkRemotePermission(permissionData) {
-	console.log(permissionData);
+	return new Promise((res, _) => {
+		switch (permissionData.permission) {
+			case "default":
+				window.safari.pushNotification.requestPermission(
+					"https://pushnotificationsexample.ru/api/spn",
+					"web.ru.pushnotificationsexample",
+					{},
+					checkRemotePermission
+				);
+				break;
+			case "denied":
+				break;
+			case "granted":
+				return res(permissionData.deviceToken);
+		}
 
-	switch (permissionData.permission) {
-		case "default":
-			return window.safari.pushNotification.requestPermission(
-				"https://pushnotificationsexample.ru/api/spn",
-				"web.ru.pushnotificationsexample",
-				{},
-				checkRemotePermission
-			);
-		case "denied":
-			break;
-		case "granted":
-			return permissionData.deviceToken;
-	}
-
-	return null;
+		res(null);
+	});
 }
 
 
