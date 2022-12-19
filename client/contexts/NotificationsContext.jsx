@@ -6,7 +6,8 @@ import {
 	isSpnAvailable,
 	subscribeViaPushApi,
 	subscribeViaSpn,
-	unsubscribeFromServerNotifications
+	unsubscribeFromPushApi,
+	unsubscribeFromSpn
 } from "../services/notifications.js";
 import { useUser } from "./UserContext.jsx";
 
@@ -49,7 +50,11 @@ export function NotificationsProvider({ children }) {
 	}
 
 	async function unsubscribe() {
-		await unsubscribeFromServerNotifications(user.id);
+		if (isSpnAvailable())
+			await unsubscribeFromSpn(user.id);
+		else
+			await unsubscribeFromPushApi(user.id, deviceIdentifier);
+
 		setSubscribed(false);
 	}
 

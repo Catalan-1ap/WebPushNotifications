@@ -52,7 +52,12 @@ export async function subscribeViaPushApi(userId, deviceIdentifier) {
 }
 
 
-export async function unsubscribeFromServerNotifications(userId) {
+export async function unsubscribeFromSpn(userId) {
+	await unsubscribe(userId);
+}
+
+
+export async function unsubscribeFromPushApi(userId) {
 	const swRegistration = await navigator.serviceWorker.ready;
 	const subscription = await swRegistration.pushManager.getSubscription();
 
