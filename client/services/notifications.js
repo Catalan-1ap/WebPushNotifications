@@ -19,22 +19,25 @@ export async function subscribeViaSpn(userId) {
 
 
 function checkRemotePermission(permissionData) {
+	switch (permissionData.permission) {
+		case "denied":
+			return null;
+		case "granted":
+			return "yep";
+	}
+
+	return Promise.resolve(requestSpnPermission()).then(checkRemotePermission);
+}
+
+
+function requestSpnPermission() {
 	return new Promise(resolve => {
-		switch (permissionData.permission) {
-			case "default":
-				window.safari.pushNotification.requestPermission(
-					"https://pushnotificationsexample.ru/api/spn",
-					"web.ru.pushnotificationsexample",
-					{},
-					resolve
-				);
-				break;
-			case "denied":
-				resolve(null);
-				break;
-			case "granted":
-				resolve(permissionData.deviceToken);
-		}
+		window.safari.pushNotification.requestPermission(
+			"https://pushnotificationsexample.ru/api/spn",
+			"web.ru.pushnotificationsexample",
+			{},
+			resolve
+		);
 	});
 }
 
