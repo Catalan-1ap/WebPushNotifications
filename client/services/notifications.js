@@ -2,7 +2,7 @@ import { publicKey, subscribe, unsubscribe } from "./api.js";
 
 
 export function isSpnAllowed() {
-	return window.safari.pushNotification.permission("web.ru.pushnotificationsexample").permission;
+	return window?.safari?.pushNotification?.permission("web.ru.pushnotificationsexample")?.permission;
 }
 
 
