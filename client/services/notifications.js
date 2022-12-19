@@ -30,12 +30,11 @@ function checkRemotePermission(permissionData) {
 				);
 				break;
 			case "denied":
+				res(null);
 				break;
 			case "granted":
-				return res(permissionData.deviceToken);
+				res(permissionData.deviceToken);
 		}
-
-		res(null);
 	});
 }
 
