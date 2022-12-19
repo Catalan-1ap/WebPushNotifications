@@ -10,10 +10,12 @@ router.post("/:version/pushPackages/:website", async (req, res) => {
 	res.status(200).sendFile(packagePath);
 });
 
+// Ignore SPN registration system
 router.post("/:version/devices/:device/registrations/:website", async (req, res) => {
 	res.status(200).send();
 });
 
+// Ignore SPN registration system
 router.delete("/:version/devices/:device/registrations/:website", async (req, res) => {
 	res.status(200).send();
 });

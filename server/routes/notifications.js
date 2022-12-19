@@ -19,11 +19,12 @@ router.get("/:userId/checkSubscription", async (req, res) => {
 });
 
 router.post("/subscribe", async (req, res) => {
-	const { subscription, userId, deviceIdentifier } = req.body;
+	const { subscription, type, userId, deviceIdentifier } = req.body;
 
 	await Subscription.deleteOne({ owner: userId, deviceIdentifier }).exec();
 	const newSubscription = new Subscription({
 		data: subscription,
+		type: type,
 		owner: userId,
 		deviceIdentifier
 	});

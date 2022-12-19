@@ -4,6 +4,7 @@ import User from "./User.js";
 
 const subscriptionSchema = new mongoose.Schema({
     data: Object,
+    type: String,
     owner: {
         type: Schema.Types.ObjectId,
         ref: User

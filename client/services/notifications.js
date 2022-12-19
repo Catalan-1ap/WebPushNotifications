@@ -4,23 +4,34 @@ import { publicKey, subscribe, unsubscribe } from "./api.js";
 export async function subscribeViaSpn(userId) {
 	const permissionData = window.safari.pushNotification.permission("web.ru.pushnotificationsexample");
 
-	checkRemotePermission(permissionData);
+	const deviceIdentifier = checkRemotePermission(permissionData);
+
+	if (!deviceIdentifier)
+		return;
+
+	await subscribe({}, "apple", userId, deviceIdentifier);
 }
 
 
 function checkRemotePermission(permissionData) {
-	if (permissionData.permission === "default") {
-		window.safari.pushNotification.requestPermission(
-			"https://pushnotificationsexample.ru/api/spn",
-			"web.ru.pushnotificationsexample",
-			{ test: "testData" },
-			checkRemotePermission
-		);
-	} else if (permissionData.permission === "denied") {
-		console.log("denied");
-	} else if (permissionData.permission === "granted") {
-		console.log(permissionData);
+	switch (permissionData.permission) {
+		case "default":
+			window.safari.pushNotification.requestPermission(
+				"https://pushnotificationsexample.ru/api/spn",
+				"web.ru.pushnotificationsexample",
+				{ test: "testData" },
+				checkRemotePermission
+			);
+			break;
+		case "denied":
+			console.log("denied");
+			break;
+		case "granted":
+			console.log(permissionData);
+			return permissionData.deviceToken;
 	}
+
+	return null;
 }
 
 
@@ -37,7 +48,7 @@ export async function subscribeViaPushApi(userId, deviceIdentifier) {
 		});
 	}
 
-	await subscribe(subscription, userId, deviceIdentifier);
+	await subscribe(subscription, "google", userId, deviceIdentifier);
 }
 
 

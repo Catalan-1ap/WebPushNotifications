@@ -48,17 +48,18 @@ export async function checkSubscription(userId) {
 }
 
 
-export async function subscribe(subscription, userId, deviceIdentifier) {
-    await fetch(`${baseRoute}/notifications/subscribe`, {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json"
-        },
-        body: JSON.stringify({
-            subscription,
-            userId,
-            deviceIdentifier
-        }),
+export async function subscribe(subscription, type, userId, deviceIdentifier) {
+	await fetch(`${baseRoute}/notifications/subscribe`, {
+		method: "POST",
+		headers: {
+			"Content-type": "application/json"
+		},
+		body: JSON.stringify({
+			subscription,
+			type,
+			userId,
+			deviceIdentifier
+		}),
     });
 }
 
