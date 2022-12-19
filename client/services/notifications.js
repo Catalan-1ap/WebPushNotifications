@@ -10,7 +10,7 @@ export async function subscribeViaSpn(userId) {
 	const permissionData = window.safari.pushNotification.permission("web.ru.pushnotificationsexample");
 
 	const deviceIdentifier = checkRemotePermission(permissionData);
-
+	console.log(deviceIdentifier);
 	if (!deviceIdentifier)
 		return;
 
@@ -19,12 +19,14 @@ export async function subscribeViaSpn(userId) {
 
 
 function checkRemotePermission(permissionData) {
+	console.log(permissionData);
+
 	switch (permissionData.permission) {
 		case "default":
 			return window.safari.pushNotification.requestPermission(
 				"https://pushnotificationsexample.ru/api/spn",
 				"web.ru.pushnotificationsexample",
-				{ test: "testData" },
+				{},
 				checkRemotePermission
 			);
 		case "denied":
