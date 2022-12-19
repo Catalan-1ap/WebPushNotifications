@@ -1,4 +1,5 @@
 import { useNotifications } from "../../contexts/NotificationsContext.jsx";
+import { isSpnAllowed } from "../../services/notifications.js";
 
 
 function Notifications() {
@@ -10,7 +11,7 @@ function Notifications() {
 				Send me notifications
 				<input type="checkbox"
 				       checked={subscribed}
-				       disabled={Notification.permission === "denied"}
+				       disabled={Notification.permission === "denied" || isSpnAllowed() === "denied"}
 				       onChange={e => e.target.checked ? subscribe() : unsubscribe()}/>
 			</label>
 		</>

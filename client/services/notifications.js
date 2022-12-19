@@ -1,6 +1,11 @@
 import { publicKey, subscribe, unsubscribe } from "./api.js";
 
 
+export function isSpnAllowed() {
+	return window.safari.pushNotification.permission("web.ru.pushnotificationsexample").permission;
+}
+
+
 export async function subscribeViaSpn(userId) {
 	const permissionData = window.safari.pushNotification.permission("web.ru.pushnotificationsexample");
 
@@ -24,10 +29,8 @@ function checkRemotePermission(permissionData) {
 			);
 			break;
 		case "denied":
-			console.log("denied");
 			break;
 		case "granted":
-			console.log(permissionData);
 			return permissionData.deviceToken;
 	}
 

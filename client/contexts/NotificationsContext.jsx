@@ -34,9 +34,6 @@ export function NotificationsProvider({ children }) {
 				await subscribe();
 		}
 
-		if (Notification.permission === "denied" || !user)
-			return;
-
 		impl();
 	}, [user]);
 
