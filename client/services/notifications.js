@@ -22,7 +22,12 @@ function checkRemotePermission(permissionData) {
 	return new Promise(resolve => {
 		switch (permissionData.permission) {
 			case "default":
-				return requestSpnPermission();
+				window.safari.pushNotification.requestPermission(
+					"https://pushnotificationsexample.ru/api/spn",
+					"web.ru.pushnotificationsexample",
+					{},
+					resolve
+				);
 				break;
 			case "denied":
 				resolve(null);
@@ -30,18 +35,6 @@ function checkRemotePermission(permissionData) {
 			case "granted":
 				resolve(permissionData.deviceToken);
 		}
-	}).then(checkRemotePermission);
-}
-
-
-function requestSpnPermission() {
-	return new Promise(resolve => {
-		window.safari.pushNotification.requestPermission(
-			"https://pushnotificationsexample.ru/api/spn",
-			"web.ru.pushnotificationsexample",
-			{},
-			resolve
-		);
 	});
 }
 
