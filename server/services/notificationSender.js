@@ -4,7 +4,8 @@ import path from "path";
 import webPush from "web-push";
 
 
-const cert = fs.readFileSync(path.resolve("./public/apns-pro.pem"));
+const cert = fs.readFileSync(path.resolve("./public/apns-pro-cert.pem"));
+const key = fs.readFileSync(path.resolve("./public/apns-pro-key.pem"));
 
 
 export async function sendViaGoogle(subscription, title, receiverId, options) {
@@ -29,6 +30,7 @@ export async function sendViaApple(title, body, deviceIdentifier) {
 
 	const apnProvider = new apn.Provider({
 		cert: cert,
+		key: key,
 		passphrase: process.env.APPLE_PASSPHRASE,
 		production: true
 	});
