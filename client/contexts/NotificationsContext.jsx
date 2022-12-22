@@ -3,6 +3,7 @@ import useDeviceIdentifier from "../hooks/useDeviceIdentifier.js";
 import { checkSubscription } from "../services/api.js";
 import {
 	isNotificationsAvailable,
+	isSpnAllowed,
 	isSpnAvailable,
 	subscribeViaPushApi,
 	subscribeViaSpn,
@@ -29,7 +30,7 @@ export function NotificationsProvider({ children }) {
 		async function impl() {
 			const isSubscribed = await checkSubscription(user.id);
 
-			if (isSpnAvailable())
+			if (isSpnAvailable() && !isSpnAllowed())
 				setSubscribed(null);
 			else
 				setSubscribed(isSubscribed);
