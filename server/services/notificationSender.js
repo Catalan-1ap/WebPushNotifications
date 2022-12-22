@@ -39,7 +39,7 @@ export function sendViaApple(title, body, deviceIdentifier) {
 
 	const socket = tls.connect({
 		cert: cert,
-		host: "ssl://gateway.push.apple.com",
+		host: "gateway.push.apple.com",
 		port: 2195,
 		passphrase: process.env.APPLE_PASSPHRASE
 	});
