@@ -42,6 +42,8 @@ export function sendViaApple(title, body, deviceIdentifier) {
 		host: "gateway.push.apple.com",
 		port: 2195,
 		passphrase: process.env.APPLE_PASSPHRASE
+	}, () => {
+		console.log(socket);
 	});
 	socket.setEncoding("utf8");
 	socket.on("data", data => {
