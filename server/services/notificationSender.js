@@ -6,7 +6,8 @@ import webPush from "web-push";
 
 
 const appleKey = fs.readFileSync(path.resolve("./public/AppleAuthKey.p8"));
-const cert = fs.readFileSync(path.resolve("./public/apns-pro.pem"));
+const cert = fs.readFileSync(path.resolve("./public/apns-pro-cert.pem"));
+const key = fs.readFileSync(path.resolve("./public/apns-pro-key.pem"));
 let appleJwt = {};
 
 
@@ -40,7 +41,8 @@ export async function sendViaApple(title, body, deviceIdentifier) {
 	console.log(Buffer.isBuffer(cert));
 	console.log(cert.toString());
 	const apnProvider = new apn.Provider({
-		cert: path.resolve("./public/apns-pro.pem"),
+		cert: cert,
+		key: key,
 		passphrase: process.env.APPLE_PASSPHRASE
 	});
 	const notification = new apn.Notification(payload);
