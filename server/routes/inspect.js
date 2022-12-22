@@ -10,7 +10,7 @@ router.get("/notifiableUsers", async (req, res) => {
 	.aggregate()
 	.lookup({ from: "users", localField: "owner", foreignField: "_id", as: "owner" })
 	.unwind("owner")
-	.project({ _id: "$owner._id", username: "$owner.username", deviceIdentifier: 1 })
+	.project({ _id: "$owner._id", username: "$owner.username", deviceIdentifier: 1, type: 1 })
 	.exec();
 
 	res.status(200).send(users);

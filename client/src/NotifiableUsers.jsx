@@ -26,6 +26,7 @@ function NotifiableUsers() {
                         <div key={user.deviceIdentifier}>
                             <NotifiableUser id={user._id}
                                             username={user.username}
+                                            type={user.type}
                                             deviceIdentifier={user.deviceIdentifier}/>
                             <hr/>
                         </div>

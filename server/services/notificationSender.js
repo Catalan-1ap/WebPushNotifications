@@ -31,9 +31,8 @@ export async function sendViaApple(title, body, deviceIdentifier) {
 	const payload = {
 		"aps": {
 			"alert": {
-				"title": "Game Request",
-				"subtitle": "Five Card Draw",
-				"body": "Bob wants to play poker"
+				"title": title,
+				"body": body
 			},
 			"url-args": []
 		},

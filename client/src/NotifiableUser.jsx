@@ -3,7 +3,7 @@ import { send } from "../services/api.js";
 import { currySetter } from "../utils.js";
 
 
-function NotifiableUser({ id, deviceIdentifier, username }) {
+function NotifiableUser({ id, deviceIdentifier, type, username }) {
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
     const [icon, setIcon] = useState("");
@@ -24,15 +24,15 @@ function NotifiableUser({ id, deviceIdentifier, username }) {
                 <input type="text" value={body} onChange={currySetter(setBody)}/>
             </label>
             <br/>
-            <label>
+            {type === "google" && <label>
                 IconUrl:
                 <input type="text" value={icon} onChange={currySetter(setIcon)}/>
-            </label>
+            </label>}
             <br/>
-            <label>
+            {type === "google" && <label>
                 Silent:
                 <input type="checkbox" checked={silent} onChange={(e) => setSilent(e.target.checked)}/>
-            </label>
+            </label>}
             <br/>
             <button onClick={() => send(id, title, { body, icon, silent })}>Send Notification</button>
         </>
