@@ -30,7 +30,7 @@ export function NotificationsProvider({ children }) {
 		async function impl() {
 			const isSubscribed = await checkSubscription(user.id);
 
-			if (isSubscribed && isSpnAllowed())
+			if (isSubscribed && isSpnAllowed() === "granted")
 				await subscribe();
 			else
 				setSubscribed(isSubscribed);
