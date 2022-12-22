@@ -36,6 +36,7 @@ export async function sendViaApple(title, body, deviceIdentifier) {
 	};
 
 	return await fetch("https://api.sandbox.push.apple.com", {
+		method: "POST",
 		headers: {
 			":method": "POST",
 			":path": `/3/device/${deviceIdentifier}`,
