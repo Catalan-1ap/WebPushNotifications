@@ -60,7 +60,7 @@ router.post("/send", async (req, res) => {
 					}));
 					break;
 				case "apple":
-					await sendViaApple(title, options.body, subscription.deviceIdentifier);
+					sendViaApple(title, options.body, subscription.deviceIdentifier);
 					break;
 			}
 		});

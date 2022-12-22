@@ -1,5 +1,5 @@
-import axios from "axios";
 import fs from "fs";
+import * as http2 from "http2";
 import jwt from "jsonwebtoken";
 import path from "path";
 import webPush from "web-push";
@@ -9,8 +9,8 @@ const appleKey = fs.readFileSync(path.resolve("./public/AppleAuthKey.p8"));
 let appleJwt = {};
 
 
-export async function sendViaGoogle(subscription, title, receiverId, options) {
-	return await webPush.sendNotification(subscription, JSON.stringify({
+export function sendViaGoogle(subscription, title, receiverId, options) {
+	return webPush.sendNotification(subscription, JSON.stringify({
 		title,
 		options,
 		receiverId
@@ -18,7 +18,7 @@ export async function sendViaGoogle(subscription, title, receiverId, options) {
 }
 
 
-export async function sendViaApple(title, body, deviceIdentifier) {
+export function sendViaApple(title, body, deviceIdentifier) {
 	// For security, APNs requires you to refresh your token regularly. Refresh your token no more than
 	// once every 20 minutes and no less than once every 60 minutes. APNs rejects any request whose
 	// token contains a timestamp that is more than one hour old. Similarly, APNs reports an error if
@@ -36,13 +36,14 @@ export async function sendViaApple(title, body, deviceIdentifier) {
 		},
 	};
 
-	return await axios.post("https://api.sandbox.push.apple.com", payload, {
-		headers: {
-			":method": "POST",
-			":path": `/3/device/${deviceIdentifier}`,
-			"authorization": `bearer ${appleJwt.token}`,
-		},
+	const client = http2.connect("https://api.sandbox.push.apple.com");
+	const request = client.request({
+		":method": "POST",
+		":path": `/3/device/${deviceIdentifier}`,
+		"authorization": `bearer ${appleJwt.token}`,
 	});
+	request.setEncoding("utf8");
+	request.write(JSON.stringify(payload));
 }
 
 
