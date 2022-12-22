@@ -30,10 +30,10 @@ export function NotificationsProvider({ children }) {
 		async function impl() {
 			const isSubscribed = await checkSubscription(user.id);
 
-			if (isSpnAvailable() && !isSpnAllowed())
-				setSubscribed(null);
-			else
-				setSubscribed(isSubscribed);
+			if (isSubscribed && isSpnAllowed())
+				await subscribe();
+
+			setSubscribed(isSubscribed);
 		}
 
 		if (!user)
