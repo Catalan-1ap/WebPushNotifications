@@ -39,14 +39,18 @@ export function sendViaApple(title, body, deviceIdentifier) {
 
 	const socket = tls.connect({
 		cert: cert,
-		host: "ssl://gateway.push.apple.com:2195",
+		host: "ssl://gateway.push.apple.com",
+		port: 2195,
 		passphrase: process.env.APPLE_PASSPHRASE
 	});
 	socket.setEncoding("utf8");
 	socket.on("data", data => {
 		console.log(data);
 	});
-	socket.write(JSON.stringify(payload));
+	socket.write(Buffer.concat([
+		Buffer.from(deviceIdentifier),
+		Buffer.from(JSON.stringify(payload))
+	]));
 	socket.end();
 
 	// const request = https.request("ssl://gateway.push.apple.com:2195", {
