@@ -9,7 +9,7 @@ const key = fs.readFileSync(path.resolve("./public/apns-pro-key.pem"));
 
 
 export async function sendViaGoogle(subscription, title, receiverId, options) {
-	return await webPush.sendNotification(subscription, JSON.stringify({
+	await webPush.sendNotification(subscription, JSON.stringify({
 		title,
 		options,
 		receiverId
@@ -35,7 +35,5 @@ export async function sendViaApple(title, body, deviceIdentifier) {
 		production: true
 	});
 	const notification = new apn.Notification(payload);
-	const res = await apnProvider.send(notification, deviceIdentifier);
-
-	console.log(res);
+	await apnProvider.send(notification, deviceIdentifier);
 }
