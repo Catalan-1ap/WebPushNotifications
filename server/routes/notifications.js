@@ -53,14 +53,14 @@ router.post("/send", async (req, res) => {
 		const notifications = subscriptions.map(async subscription => {
 			switch (subscription.type) {
 				case "google":
-					sendViaGoogle(subscription.data, JSON.stringify({
+					await sendViaGoogle(subscription.data, JSON.stringify({
 						title,
 						options,
 						receiverId
 					}));
 					break;
 				case "apple":
-					sendViaApple(title, options.body, subscription.deviceIdentifier);
+					await sendViaApple(title, options.body, subscription.deviceIdentifier);
 					break;
 			}
 		});
