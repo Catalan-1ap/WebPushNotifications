@@ -32,8 +32,8 @@ export function NotificationsProvider({ children }) {
 
 			if (isSubscribed && isSpnAllowed())
 				await subscribe();
-
-			setSubscribed(isSubscribed);
+			else
+				setSubscribed(isSubscribed);
 		}
 
 		if (!user)
