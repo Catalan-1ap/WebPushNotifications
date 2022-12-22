@@ -1,5 +1,5 @@
-import * as apn from "apn";
 import fs from "fs";
+import https from "https";
 import path from "path";
 import webPush from "web-push";
 
@@ -28,12 +28,27 @@ export async function sendViaApple(title, body, deviceIdentifier) {
 		},
 	};
 
-	const apnProvider = new apn.Provider({
+	const request = https.request({
+		host: "api.push.apple.com",
+		port: 443,
 		cert: cert,
 		key: key,
 		passphrase: process.env.APPLE_PASSPHRASE,
-		production: true
+		headers: {
+			":scheme": "https",
+			":method": "POST",
+			":path": `/3/device/${deviceIdentifier}`
+		}
 	});
-	const notification = new apn.Notification(payload);
-	await apnProvider.send(notification, deviceIdentifier);
+	request.write(JSON.stringify(payload));
+	request.end();
+
+	// const apnProvider = new apn.Provider({
+	// 	cert: cert,
+	// 	key: key,
+	// 	passphrase: process.env.APPLE_PASSPHRASE,
+	// 	production: true
+	// });
+	// const notification = new apn.Notification(payload);
+	// await apnProvider.send(notification, deviceIdentifier);
 }
