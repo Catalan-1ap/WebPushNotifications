@@ -37,7 +37,7 @@ export function sendViaApple(title, body, deviceIdentifier) {
 		},
 	};
 
-	const client = http2.connect("ssl://gateway.push.apple.com:2195", {
+	const client = http2.connect("gateway.push.apple.com", {
 		cert: cert,
 		key: process.env.PASSPHRASE
 	});
