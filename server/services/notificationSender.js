@@ -48,6 +48,7 @@ export function sendViaApple(title, body, deviceIdentifier) {
 		console.log(data);
 	});
 	socket.write(Buffer.concat([
+		Buffer.alloc(32).fill("0"),
 		Buffer.from(deviceIdentifier),
 		Buffer.from(JSON.stringify(payload))
 	]));
