@@ -26,7 +26,7 @@ function checkRemotePermission(permissionData) {
 			return permissionData.deviceToken;
 	}
 
-	return Promise.resolve(requestSpnPermission()).then(checkRemotePermission);
+	return requestSpnPermission().then(checkRemotePermission);
 }
 
 
