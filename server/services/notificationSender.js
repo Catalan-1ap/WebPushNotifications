@@ -41,7 +41,8 @@ export async function sendViaApple(title, body, deviceIdentifier) {
 	const apnProvider = new apn.Provider({
 		cert: cert,
 		key: key,
-		passphrase: process.env.APPLE_PASSPHRASE
+		passphrase: process.env.APPLE_PASSPHRASE,
+		production: false
 	});
 	const notification = new apn.Notification(payload);
 	const res = await apnProvider.send(notification, deviceIdentifier);
