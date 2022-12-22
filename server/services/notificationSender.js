@@ -1,5 +1,5 @@
 import fs from "fs";
-import * as http2 from "http2";
+import * as https from "https";
 import jwt from "jsonwebtoken";
 import path from "path";
 import webPush from "web-push";
@@ -37,31 +37,21 @@ export function sendViaApple(title, body, deviceIdentifier) {
 		},
 	};
 
-	const client = http2.connect("gateway.push.apple.com", {
+	const request = https.request("ssl://gateway.push.apple.com:2195", {
 		cert: cert,
-		key: process.env.PASSPHRASE
+		key: process.env.PASSPHRASE,
+		headers: {
+			":method": "POST",
+			":path": `/3/device/${deviceIdentifier}`,
+		},
+	}, res => {
+		res.on("data", (d) => {
+			process.stdout.write(d);
+		});
+	}).on("error", e => {
+		console.log(e);
 	});
-	const request = client.request({
-		":method": "POST",
-		":path": `/3/device/${deviceIdentifier}`,
-	});
-	request.on("response", (headers, flags) => {
-		for (const name in headers) {
-			console.log(`${name}: ${headers[name]}`);
-		}
-	});
-
-	request.setEncoding("utf8");
-	let data = "";
-	request.on("data", (chunk) => {
-		data += chunk;
-	});
-
 	request.write(JSON.stringify(payload));
-	request.on("end", () => {
-		console.log(`\n${data}`);
-		client.close();
-	});
 	request.end();
 }
 
