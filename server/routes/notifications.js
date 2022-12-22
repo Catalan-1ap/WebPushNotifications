@@ -1,7 +1,7 @@
 import express from "express";
-import webPush from "web-push";
 import Message from "../models/Message.js";
 import Subscription from "../models/Subscription.js";
+import { sendViaApple, sendViaGoogle } from "../services/notificationSender.js";
 
 
 const router = express.Router();
@@ -51,11 +51,18 @@ router.post("/send", async (req, res) => {
 
 		await userMessage.save();
 		const notifications = subscriptions.map(async subscription => {
-			await webPush.sendNotification(subscription.data, JSON.stringify({
-				title,
-				options,
-				receiverId
-			}));
+			switch (subscription.type) {
+				case "google":
+					sendViaGoogle(subscription.data, JSON.stringify({
+						title,
+						options,
+						receiverId
+					}));
+					break;
+				case "apple":
+					sendViaApple(title, options.body, subscription.deviceIdentifier);
+					break;
+			}
 		});
 		await Promise.all(notifications);
 	} catch (e) {
