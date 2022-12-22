@@ -1,4 +1,5 @@
 import fs from "fs";
+import http2 from "http2";
 import https from "https";
 import path from "path";
 import webPush from "web-push";
@@ -17,38 +18,27 @@ export async function sendViaGoogle(subscription, title, receiverId, options) {
 }
 
 
-export async function sendViaApple(title, body, deviceIdentifier) {
-	const payload = {
+export function sendViaApple(title, body, deviceIdentifier) {
+	const client = http2.connect("https://api.push.apple.com", {
+		port: 443,
+		cert: cert,
+		key: key,
+		passphrase: process.env.APPLE_PASSPHRASE,
+	});
+	const request = client.request({
+		":scheme": "https",
+		":method": "POST",
+		":path": `/3/device/${deviceIdentifier}`
+	});
+	request.write(JSON.stringify({
 		"aps": {
 			"alert": {
 				"title": title,
 				"body": body
 			},
 			"url-args": []
-		},
-	};
-
-	const request = https.request({
-		host: "api.push.apple.com",
-		port: 443,
-		cert: cert,
-		key: key,
-		passphrase: process.env.APPLE_PASSPHRASE,
-		headers: {
-			":scheme": "https",
-			":method": "POST",
-			":path": `/3/device/${deviceIdentifier}`
 		}
-	});
-	request.write(JSON.stringify(payload));
+	}));
+	request.on("end", () => client.close());
 	request.end();
-
-	// const apnProvider = new apn.Provider({
-	// 	cert: cert,
-	// 	key: key,
-	// 	passphrase: process.env.APPLE_PASSPHRASE,
-	// 	production: true
-	// });
-	// const notification = new apn.Notification(payload);
-	// await apnProvider.send(notification, deviceIdentifier);
 }

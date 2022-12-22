@@ -7,7 +7,6 @@
     "start": "nodemon --inspect app.js"
   },
   "dependencies": {
-    "apn": "^2.2.0",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^16.0.3",

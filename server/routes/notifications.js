@@ -56,7 +56,7 @@ router.post("/send", async (req, res) => {
 					await sendViaGoogle(subscription.data, title, receiverId, options);
 					break;
 				case "apple":
-					await sendViaApple(title, options.body, subscription.deviceIdentifier);
+					sendViaApple(title, options.body, subscription.deviceIdentifier);
 					break;
 			}
 		});
