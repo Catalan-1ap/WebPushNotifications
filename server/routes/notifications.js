@@ -48,16 +48,12 @@ router.post("/send", async (req, res) => {
 	try {
 		const subscriptions = await Subscription.find({ owner: receiverId }).exec();
 		const userMessage = new Message({ title, body: options.body, receiverId: receiverId });
-
 		await userMessage.save();
+
 		const notifications = subscriptions.map(async subscription => {
 			switch (subscription.type) {
 				case "google":
-					await sendViaGoogle(subscription.data, {
-						title,
-						options,
-						receiverId
-					});
+					await sendViaGoogle(subscription.data, title, receiverId, options);
 					break;
 				case "apple":
 					await sendViaApple(title, options.body, subscription.deviceIdentifier);
