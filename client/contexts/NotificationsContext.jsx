@@ -29,11 +29,14 @@ export function NotificationsProvider({ children }) {
 	useEffect(() => {
 		async function impl() {
 			const isSubscribed = await checkSubscription(user.id);
+			const spnAllowed = isSpnAllowed();
 
-			if (isSubscribed && isSpnAllowed() === "granted")
+			if (isSubscribed && spnAllowed === "granted")
 				await subscribe();
-			else
-				setSubscribed(isSubscribed);
+			else if (spnAllowed === "default")
+				return;
+
+			setSubscribed(isSubscribed);
 		}
 
 		if (!user)
