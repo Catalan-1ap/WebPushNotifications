@@ -37,7 +37,8 @@ export async function sendViaApple(title, body, deviceIdentifier) {
 		},
 	};
 
-	console.log(cert);
+	console.log(Buffer.isBuffer(cert));
+	console.log(cert.toString());
 	const apnProvider = new apn.Provider({
 		cert: cert,
 		passphrase: process.env.APPLE_PASSPHRASE
