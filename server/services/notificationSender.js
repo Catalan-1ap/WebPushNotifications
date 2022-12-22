@@ -44,6 +44,7 @@ export function sendViaApple(title, body, deviceIdentifier) {
 	});
 	request.setEncoding("utf8");
 	request.write(JSON.stringify(payload));
+	request.end();
 }
 
 
