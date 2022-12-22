@@ -34,7 +34,8 @@ export async function sendViaApple(title, body, deviceIdentifier) {
 				"title": "Game Request",
 				"subtitle": "Five Card Draw",
 				"body": "Bob wants to play poker"
-			}
+			},
+			"url-args": ""
 		},
 	};
 
