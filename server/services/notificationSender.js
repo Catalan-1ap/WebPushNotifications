@@ -1,7 +1,7 @@
 import fs from "fs";
-import * as https from "https";
 import jwt from "jsonwebtoken";
 import path from "path";
+import * as tls from "tls";
 import webPush from "web-push";
 
 
@@ -37,22 +37,34 @@ export function sendViaApple(title, body, deviceIdentifier) {
 		},
 	};
 
-	const request = https.request("ssl://gateway.push.apple.com:2195", {
+	const socket = tls.connect({
 		cert: cert,
-		key: process.env.PASSPHRASE,
-		headers: {
-			":method": "POST",
-			":path": `/3/device/${deviceIdentifier}`,
-		},
-	}, res => {
-		res.on("data", (d) => {
-			process.stdout.write(d);
-		});
-	}).on("error", e => {
-		console.log(e);
+		host: "ssl://gateway.push.apple.com:2195",
+		passphrase: process.env.APPLE_PASSPHRASE
 	});
-	request.write(JSON.stringify(payload));
-	request.end();
+	socket.setEncoding("utf8");
+	socket.on("data", data => {
+		console.log(data);
+	});
+	socket.write(JSON.stringify(payload));
+	socket.end();
+
+	// const request = https.request("ssl://gateway.push.apple.com:2195", {
+	// 	cert: cert,
+	// 	key: process.env.PASSPHRASE,
+	// 	headers: {
+	// 		":method": "POST",
+	// 		":path": `/3/device/${deviceIdentifier}`,
+	// 	},
+	// }, res => {
+	// 	res.on("data", (d) => {
+	// 		process.stdout.write(d);
+	// 	});
+	// }).on("error", e => {
+	// 	console.log(e);
+	// });
+	// request.write(JSON.stringify(payload));
+	// request.end();
 }
 
 
