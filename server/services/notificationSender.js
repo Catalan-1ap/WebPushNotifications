@@ -42,8 +42,23 @@ export function sendViaApple(title, body, deviceIdentifier) {
 		":path": `/3/device/${deviceIdentifier}`,
 		"authorization": `bearer ${appleJwt.token}`,
 	});
+	request.on("response", (headers, flags) => {
+		for (const name in headers) {
+			console.log(`${name}: ${headers[name]}`);
+		}
+	});
+
 	request.setEncoding("utf8");
+	let data = "";
+	request.on("data", (chunk) => {
+		data += chunk;
+	});
+
 	request.write(JSON.stringify(payload));
+	request.on("end", () => {
+		console.log(`\n${data}`);
+		client.close();
+	});
 	request.end();
 }
 
