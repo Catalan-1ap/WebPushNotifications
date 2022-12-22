@@ -1,3 +1,4 @@
+import axios from "axios";
 import fs from "fs";
 import jwt from "jsonwebtoken";
 import path from "path";
@@ -35,15 +36,12 @@ export async function sendViaApple(title, body, deviceIdentifier) {
 		},
 	};
 
-	return await fetch("https://api.sandbox.push.apple.com", {
-		method: "POST",
+	return await axios.post("https://api.sandbox.push.apple.com", payload, {
 		headers: {
 			":method": "POST",
 			":path": `/3/device/${deviceIdentifier}`,
 			"authorization": `bearer ${appleJwt.token}`,
-			"Content-Type": "application/json"
 		},
-		body: JSON.stringify(payload)
 	});
 }
 
