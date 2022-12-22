@@ -19,14 +19,13 @@ function UserActions() {
 				<Logout/>
 				{isAvailable && <Notifications/>}
 			</div>
-			{isAvailable && subscribed && (
-				<div style={{ marginLeft: "10rem", display: "flex" }}>
-					<h2 style={{ marginRight: "5rem" }}>Messages: </h2>
-					<div style={{ display: "flex", gap: "2rem", alignItems: "center", flexWrap: "wrap" }}>
-						<Messages/>
-					</div>
+
+			<div style={{ marginLeft: "10rem", display: "flex" }}>
+				<h2 style={{ marginRight: "5rem" }}>Messages: </h2>
+				<div style={{ display: "flex", gap: "2rem", alignItems: "center", flexWrap: "wrap" }}>
+					<Messages/>
 				</div>
-			)}
+			</div>
 		</div>
 	);
 }

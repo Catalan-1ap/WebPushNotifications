@@ -1,5 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import useDeviceIdentifier from "../hooks/useDeviceIdentifier.js";
+import { checkSubscription } from "../services/api.js";
 import {
 	isNotificationsAvailable,
 	isSpnAvailable,
@@ -23,6 +24,22 @@ export function NotificationsProvider({ children }) {
 	const { user } = useUser();
 	const [subscribed, setSubscribed] = useState(false);
 	const deviceIdentifier = useDeviceIdentifier();
+
+	useEffect(() => {
+		async function impl() {
+			const isSubscribed = await checkSubscription(user.id);
+
+			if (isSpnAvailable())
+				setSubscribed(null);
+			else
+				setSubscribed(isSubscribed);
+		}
+
+		if (!user)
+			return;
+
+		impl();
+	}, [user]);
 
 	async function subscribe() {
 		if (isSpnAvailable())

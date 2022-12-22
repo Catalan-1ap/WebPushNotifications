@@ -10,7 +10,7 @@ function Notifications() {
 			<label>
 				Send me notifications
 				<input type="checkbox"
-				       checked={subscribed}
+				       checked={subscribed ?? false}
 				       disabled={Notification.permission === "denied" || isSpnAllowed() === "denied"}
 				       onChange={e => e.target.checked ? subscribe() : unsubscribe()}/>
 			</label>
