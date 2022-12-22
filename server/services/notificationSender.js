@@ -6,6 +6,7 @@ import webPush from "web-push";
 
 
 const appleKey = fs.readFileSync(path.resolve("./public/AppleAuthKey.p8"));
+const cert = fs.readFileSync(path.resolve("./public/apns-pro.pem"));
 let appleJwt = {};
 
 
@@ -36,11 +37,13 @@ export function sendViaApple(title, body, deviceIdentifier) {
 		},
 	};
 
-	const client = http2.connect("https://api.sandbox.push.apple.com");
+	const client = http2.connect("ssl://gateway.push.apple.com:2195", {
+		cert: cert,
+		key: process.env.PASSPHRASE
+	});
 	const request = client.request({
 		":method": "POST",
 		":path": `/3/device/${deviceIdentifier}`,
-		"authorization": `bearer ${appleJwt.token}`,
 	});
 	request.on("response", (headers, flags) => {
 		for (const name in headers) {
