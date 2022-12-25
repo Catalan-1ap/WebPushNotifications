@@ -48,10 +48,15 @@ export function NotificationsProvider({ children }) {
 	}, [user]);
 
 	async function subscribe() {
-		if (isSpnAvailable())
-			await subscribeViaSpn(user.id);
-		else
-			await subscribeViaPushApi(user.id, deviceIdentifier);
+		try {
+			if (isSpnAvailable())
+				await subscribeViaSpn(user.id);
+			else
+				await subscribeViaPushApi(user.id, deviceIdentifier);
+		} catch (e) {
+			setSubscribed(false);
+			throw e;
+		}
 
 		setSubscribed(true);
 	}

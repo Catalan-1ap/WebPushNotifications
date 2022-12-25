@@ -9,7 +9,6 @@ function Login() {
     async function sendRequest(event, { username, password }) {
         event.preventDefault();
         const res = await login({ username, password });
-        console.log("logged user:", res);
         setUser({
             id: res._id,
             username: res.username,
