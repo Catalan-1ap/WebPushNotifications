@@ -43,6 +43,7 @@ function requestSpnPermission() {
 
 
 export async function subscribeViaPushApi(userId, deviceIdentifier) {
+	console.log("subscribe via Push API");
 	const swRegistration = await navigator.serviceWorker.ready;
 	let subscription = await swRegistration.pushManager.getSubscription();
 

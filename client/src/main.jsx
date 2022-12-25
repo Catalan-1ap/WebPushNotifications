@@ -6,19 +6,23 @@ import { isServiceWorkerAndPushApiAvailable } from "../services/notifications.js
 import App from "./App.jsx";
 
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-	<React.StrictMode>
-		<UserProvider>
-			<NotificationsProvider>
-				<App/>
-			</NotificationsProvider>
-		</UserProvider>
-	</React.StrictMode>
-);
+try {
+	ReactDOM.createRoot(document.getElementById("root")).render(
+		<React.StrictMode>
+			<UserProvider>
+				<NotificationsProvider>
+					<App/>
+				</NotificationsProvider>
+			</UserProvider>
+		</React.StrictMode>
+	);
 
-if (isServiceWorkerAndPushApiAvailable())
-	navigator.serviceWorker
-	         .register("./notificationsServiceWorker.js", {
-		         scope: "/"
-	         })
-	         .then(() => navigator.serviceWorker.ready);
+	if (isServiceWorkerAndPushApiAvailable())
+		navigator.serviceWorker
+		         .register("./notificationsServiceWorker.js", {
+			         scope: "/"
+		         })
+		         .then(() => navigator.serviceWorker.ready);
+} catch (e) {
+	console.error(e);
+}
