@@ -33,6 +33,8 @@ export function NotificationsProvider({ children }) {
 
 			if (isSubscribed && spnAllowed === "granted")
 				await subscribe();
+			else if (isSubscribed && !spnAllowed)
+				await subscribe();
 			else if (spnAllowed === "default")
 				return;
 
